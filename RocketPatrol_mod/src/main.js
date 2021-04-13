@@ -10,7 +10,8 @@ Time Taken
 +10 -- animated spaceship
 + 5 -- background music
 + 5 -- increased speed at 30 seconds
-=100
++ 2 -- added Dvorak compatibility 
+= 102
 
 */
 
