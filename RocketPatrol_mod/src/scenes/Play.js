@@ -67,7 +67,7 @@ class Play extends Phaser.Scene{
         this.p1Score = 0;
 
         //display score
-        let scoreConfig = {
+        this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
@@ -79,24 +79,34 @@ class Play extends Phaser.Scene{
             },
             fixedWidth: 200
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, 'Score:'+ this.p1Score, scoreConfig);
-        scoreConfig.fixedWidth = 0;
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, 'Score:'+ this.p1Score, this.scoreConfig);
+        this.scoreConfig.fixedWidth = 0;
 
         //GAME OVER flag
         this.gameOver = false;
 
 
-        
-
         //60-second play clock
-        
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or <- for Menu', this.scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
 
-       
+       //display time
+        let timeConfig = {
+        fontFamily: 'Courier',
+        fontSize: '28px',
+        backgroundColor: '#F3B141',
+        color: '#843605',
+        align: 'right',
+        padding: {
+            top: 5,
+            bottom: 5,
+        },
+        fixedWidth: 200
+        }
+        this.timeLeft = this.add.text(borderUISize + borderPadding + 30, borderUISize + borderPadding*4, 'Timer:' + this.clock.getRemainingSeconds(), timeConfig);
 
         
     }
@@ -125,33 +135,27 @@ class Play extends Phaser.Scene{
         if(this.checkCollision(this.p1player, this.ship03)) {
             this.p1player.reset();
             this.shipExplode(this.ship03);
-            game.settings.gameTimer += 50000;
+            let timeRemaining = this.clock.getRemaining();
+            this.time.removeAllEvents();
+            this.createTime(timeRemaining, 5000);
         }
         if(this.checkCollision(this.p1player, this.ship02)) {
             this.p1player.reset();
             this.shipExplode(this.ship02);
-            
-            
+            let timeRemaining = this.clock.getRemaining();
+            this.time.removeAllEvents();
+            this.createTime(timeRemaining, 5000);
         }
         if(this.checkCollision(this.p1player, this.ship01)) {
             this.p1player.reset();
             this.shipExplode(this.ship01);
-            
+            let timeRemaining = this.clock.getRemaining();
+            this.time.removeAllEvents();
+            this.createTime(timeRemaining, 5000);
         }
-         //display time ?
-         let timeConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 200
-        }
-      /*  this.timeLeft = this.add.text(borderUISize + borderPadding + 30, borderUISize + borderPadding*4, 'Timer:' + this.clock.getRemainingSeconds(), timeConfig);*/
+
+
+        this.timeLeft.text = 'Timer:' + this.clock.getRemainingSeconds();
         
       
     }
@@ -189,5 +193,17 @@ class Play extends Phaser.Scene{
 
         //essplode
         this.sound.play('sfx_explosion');
+    }
+
+    createTime(timeLeft, timeAdd){
+        //display score
+        
+        
+        this.clock = this.time.delayedCall(timeLeft + timeAdd, () => {
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or <- for Menu', this.scoreConfig).setOrigin(0.5);
+            this.gameOver = true;
+        }, null, this);
+
     }
 }
