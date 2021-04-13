@@ -4,14 +4,19 @@ Molly Thompson, CMPM-02
 Date
 Time Taken
 
- 40 -- theme redesign
-+20 -- add time for successful hit
-+20 -- add particle emitter
-+10 -- animated spaceship
-+ 5 -- background music
-+ 5 -- increased speed at 30 seconds
-+ 2 -- added Dvorak compatibility 
-= 102
++ 2 -- dvorak compatibility
++ 5 -- bg music
++ 5 -- new bg sprite
++10 -- new UI
++10 -- display time
++10 -- new title screen
++10 -- new animated spaceship
++10 -- parallax scrolling
++20 -- all new assets
++20 -- add time for hits -- done!
+=102
+
+
 
 */
 

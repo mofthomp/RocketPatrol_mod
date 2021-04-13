@@ -7,9 +7,10 @@ class Play extends Phaser.Scene{
 
     preload() {
         //load images/tile sprites
-        this.load.image('rocket', './assets/rocket.png');
-        this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
+        this.load.image('player', './assets/player.png');
+        this.load.image('enemy', './assets/enemy.png');
+        this.load.image('background', './assets/background.png');
+        //this.load.image('foreground', './assets/foreground.png');
         //load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {
             frameWidth: 64,
@@ -20,8 +21,8 @@ class Play extends Phaser.Scene{
     }
 
     create() { //back to front
-        //place starfield
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0);
+        //place background
+        this.background = this.add.tileSprite(0, 0, 640, 480, 'background').setOrigin(0,0);
 
         // green UI background rect
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0,0);
@@ -32,14 +33,14 @@ class Play extends Phaser.Scene{
         this.add.rectangle(0,0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
 
-        //add rocket (player 1)
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+        //add player (player 1)
+        this.p1player = new player(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'player').setOrigin(0.5, 0);
         
-        //add spaceship (x3)
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4,'spaceship', 0, 30).setOrigin(0,0); //highest ship has highest pts
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2 ,'spaceship', 0, 20).setOrigin(0,0);
+        //add enemy (x3)
+        this.ship01 = new enemy(this, game.config.width + borderUISize*6, borderUISize*4,'enemy', 0, 30).setOrigin(0,0); //highest ship has highest pts
+        this.ship02 = new enemy(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2 ,'enemy', 0, 20).setOrigin(0,0);
 
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4,'spaceship', 0, 10).setOrigin(0,0);
+        this.ship03 = new enemy(this, game.config.width, borderUISize*6 + borderPadding*4,'enemy', 0, 10).setOrigin(0,0);
 
         //define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -76,20 +77,28 @@ class Play extends Phaser.Scene{
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 200
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, 'Score:'+ this.p1Score, scoreConfig);
+        scoreConfig.fixedWidth = 0;
 
         //GAME OVER flag
         this.gameOver = false;
 
+
+        
+
         //60-second play clock
-        scoreConfig.fixedWidth = 0;
+        
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+       
+
+        
     }
 
 
@@ -102,10 +111,10 @@ class Play extends Phaser.Scene{
             this.scene.start('menuScene');
         }
         
-        this.starfield.tilePositionX -= starSpeed;
+        this.background.tilePositionX -= starSpeed;
         if(!this.gameOver) {
-            //update rocket
-            this.p1Rocket.update();
+            //update player
+            this.p1player.update();
             //update ships
             this.ship01.update();
             this.ship02.update();
@@ -113,26 +122,48 @@ class Play extends Phaser.Scene{
         }
 
         //check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.p1player, this.ship03)) {
+            this.p1player.reset();
             this.shipExplode(this.ship03);
+            game.settings.gameTimer += 50000;
         }
-        if(this.checkCollision(this.p1Rocket, this.ship02)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.p1player, this.ship02)) {
+            this.p1player.reset();
             this.shipExplode(this.ship02);
+            
+            
         }
-        if(this.checkCollision(this.p1Rocket, this.ship01)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.p1player, this.ship01)) {
+            this.p1player.reset();
             this.shipExplode(this.ship01);
+            
         }
+         //display time ?
+         let timeConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 200
+        }
+      /*  this.timeLeft = this.add.text(borderUISize + borderPadding + 30, borderUISize + borderPadding*4, 'Timer:' + this.clock.getRemainingSeconds(), timeConfig);*/
+        
+      
     }
 
-    checkCollision(rocket, ship) {
+
+
+    checkCollision(player, ship) {
         //simple 'axis aligned bounding boxes' collision
-        if( rocket.x < ship.x + ship.width &&
-            rocket.x + rocket.width > ship.x &&
-            rocket.y < ship.y + ship.height &&
-            rocket.y + rocket.height > ship.y) {
+        if( player.x < ship.x + ship.width &&
+            player.x + player.width > ship.x &&
+            player.y < ship.y + ship.height &&
+            player.y + player.height > ship.y) {
                 return true;
             } 
         else {
