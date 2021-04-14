@@ -2,18 +2,14 @@
 Molly Thompson, CMPM-02
 "Title Goes Here"
 Date
-Time Taken
+Time Taken: 3 + 
 
-+ 2 -- dvorak compatibility
++ 2 -- dvorak compatibility -- done!
++ 5 -- randomize "ships" -- done!
 + 5 -- bg music
-+ 5 -- new bg sprite
-+10 -- new UI
-+10 -- display time
-+10 -- new title screen
-+10 -- new animated spaceship
-+10 -- parallax scrolling
-+20 -- all new assets
++10 -- display time -- done!
 +20 -- add time for hits -- done!
++60 -- full reskin (new assets; new sfx; new UI; new menu screen)
 =102
 
 
@@ -24,6 +20,7 @@ let config = {
     type: Phaser.CANVAS,
     width: 640,
     height: 480,
+    backgroundColor: '#FFFFFF',
     scene: [ Menu, Play ]
 }
 

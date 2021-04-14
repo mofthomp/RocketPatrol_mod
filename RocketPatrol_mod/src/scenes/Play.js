@@ -25,22 +25,21 @@ class Play extends Phaser.Scene{
         this.background = this.add.tileSprite(0, 0, 640, 480, 'background').setOrigin(0,0);
 
         // green UI background rect
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0,0);
+        this.add.rectangle(0, borderPadding, game.config.width, borderUISize * 2, 0x000000).setOrigin(0,0);
 
         // white borders
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(0,0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
+        this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
+        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
+        this.add.rectangle(0,0, borderUISize, game.config.height, 0x000000).setOrigin(0,0);
+        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x000000).setOrigin(0,0);
 
         //add player (player 1)
         this.p1player = new Player(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'player').setOrigin(0.5, 0);
         
         //add enemy (x3)
-        this.ship01 = new Enemy(this, game.config.width + borderUISize*6, borderUISize*4,'enemy', 0, 30).setOrigin(0,0); //highest ship has highest pts
-        this.ship02 = new Enemy(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2 ,'enemy', 0, 20).setOrigin(0,0);
-
-        this.ship03 = new Enemy(this, game.config.width, borderUISize*6 + borderPadding*4,'enemy', 0, 10).setOrigin(0,0);
+        this.ship01 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2) + 1)), borderUISize*4,'enemy', 0, 30).setOrigin(0,0); //highest ship has highest pts
+        this.ship02 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2))), borderUISize*6 + borderPadding*3 ,'enemy', 0, 20).setOrigin(0,0);
+        this.ship03 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2))), borderUISize*8 + borderPadding*4,'enemy', 0, 10).setOrigin(0,0);
 
         //define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -67,36 +66,46 @@ class Play extends Phaser.Scene{
         this.p1Score = 0;
 
         //display score
-        let scoreConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'right',
+        this.scoreConfig = {
+            fontFamily: 'Comic Sans MS',
+            fontSize: '25px',
+            backgroundColor: '#00000',
+            color: '#FFFFFF',
+            align: 'center',
             padding: {
                 top: 5,
                 bottom: 5,
             },
             fixedWidth: 200
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, 'Score:'+ this.p1Score, scoreConfig);
-        scoreConfig.fixedWidth = 0;
+        this.scoreLeft = this.add.text(borderPadding + borderUISize, borderUISize, 'Score: '+ this.p1Score, this.scoreConfig);
+        this.scoreConfig.fixedWidth = 0;
 
         //GAME OVER flag
         this.gameOver = false;
 
 
-        
-
         //60-second play clock
-        
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or <- for Menu', this.scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
 
-       
+       //display time
+        let timeConfig = {
+        fontFamily: 'Comic Sans MS',
+        fontSize: '25px',
+        backgroundColor: '#000000',
+        color: '#FFFFFF',
+        align: 'center',
+        padding: {
+            top: 5,
+            bottom: 5,
+        },
+        fixedWidth: 200
+        }
+        this.timeLeft = this.add.text(game.config.width - (200 + borderUISize + borderPadding), borderUISize, 'Timer: ' + Math.round(this.clock.getRemainingSeconds()), timeConfig);
 
         
     }
@@ -125,33 +134,27 @@ class Play extends Phaser.Scene{
         if(this.checkCollision(this.p1player, this.ship03)) {
             this.p1player.reset();
             this.shipExplode(this.ship03);
-            game.settings.gameTimer += 50000;
+            let timeRemaining = this.clock.getRemaining();
+            this.time.removeAllEvents();
+            this.createTime(timeRemaining, 5000);
         }
         if(this.checkCollision(this.p1player, this.ship02)) {
             this.p1player.reset();
             this.shipExplode(this.ship02);
-            
-            
+            let timeRemaining = this.clock.getRemaining();
+            this.time.removeAllEvents();
+            this.createTime(timeRemaining, 5000);
         }
         if(this.checkCollision(this.p1player, this.ship01)) {
             this.p1player.reset();
             this.shipExplode(this.ship01);
-            
+            let timeRemaining = this.clock.getRemaining();
+            this.time.removeAllEvents();
+            this.createTime(timeRemaining, 5000);
         }
-         //display time ?
-         let timeConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 200
-        }
-      /*  this.timeLeft = this.add.text(borderUISize + borderPadding + 30, borderUISize + borderPadding*4, 'Timer:' + this.clock.getRemainingSeconds(), timeConfig);*/
+
+
+        this.timeLeft.text = 'Timer: ' + Math.round(this.clock.getRemainingSeconds());
         
       
     }
@@ -185,9 +188,20 @@ class Play extends Phaser.Scene{
 
         //score add and repaint
         this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;
+        this.scoreLeft.text = 'Score: ' + this.p1Score;
 
         //essplode
         this.sound.play('sfx_explosion');
+    }
+
+    createTime(timeLeft, timeAdd){
+        //display timer
+        
+        this.clock = this.time.delayedCall(timeLeft + timeAdd, () => {
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or <- for Menu', this.scoreConfig).setOrigin(0.5);
+            this.gameOver = true;
+        }, null, this);
+
     }
 }
