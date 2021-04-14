@@ -5,7 +5,7 @@ Date
 Time Taken: 3 + 
 
 + 2 -- dvorak compatibility -- done!
-+ 5 -- randomize "ships" -- done!
++ 5 -- randomize "ships" -- 
 + 5 -- bg music
 +10 -- display time -- done!
 +20 -- add time for hits -- done!
