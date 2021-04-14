@@ -27,6 +27,12 @@ class Play extends Phaser.Scene{
         // green UI background rect
         this.add.rectangle(0, borderPadding, game.config.width, borderUISize * 2, 0x000000).setOrigin(0,0);
 
+
+        //add enemy (x3)
+        this.ship01 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2) + 1)), borderUISize*4,'enemy', 0, 30, this.flip()).setOrigin(0,0); //highest ship has highest pts
+        this.ship02 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2))), borderUISize*6 + borderPadding*3 ,'enemy', 0, 20, this.flip()).setOrigin(0,0);
+        this.ship03 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2))), borderUISize*8 + borderPadding*4,'enemy', 0, 10, this.flip()).setOrigin(0,0);
+
         // white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
@@ -36,10 +42,6 @@ class Play extends Phaser.Scene{
         //add player (player 1)
         this.p1player = new Player(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'player').setOrigin(0.5, 0);
         
-        //add enemy (x3)
-        this.ship01 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2) + 1)), borderUISize*4,'enemy', 0, 30).setOrigin(0,0); //highest ship has highest pts
-        this.ship02 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2))), borderUISize*6 + borderPadding*3 ,'enemy', 0, 20).setOrigin(0,0);
-        this.ship03 = new Enemy(this, Math.floor((Math.random() * (640-borderPadding*2))), borderUISize*8 + borderPadding*4,'enemy', 0, 10).setOrigin(0,0);
 
         //define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -194,7 +196,7 @@ class Play extends Phaser.Scene{
         this.sound.play('sfx_explosion');
     }
 
-    createTime(timeLeft, timeAdd){
+    createTime(timeLeft, timeAdd){ 
         //display timer
         
         this.clock = this.time.delayedCall(timeLeft + timeAdd, () => {
@@ -202,6 +204,13 @@ class Play extends Phaser.Scene{
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or <- for Menu', this.scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+    }
+
+    flip() {
+        let direction = Math.round(Math.random());
+        console.log(direction);
+        return(direction);
 
     }
 }
