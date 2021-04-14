@@ -15,10 +15,10 @@ class Menu extends Phaser.Scene {
 
     create() {
         let menuConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'Comic Sans MS',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#FFFFFF',
+            color: '#000000',
             align: 'right',
             padding: {
                 top: 5,
@@ -29,8 +29,8 @@ class Menu extends Phaser.Scene {
 
         //show menu txt
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, '"ROCKET PATROL"', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'Use arrows to move and F to fire', menuConfig).setOrigin(0.5);
-        menuConfig.backgroundColor = '#00FF00';
+        this.add.text(game.config.width/2, game.config.height/3, 'Use arrows to move and F to fire', menuConfig).setOrigin(0.5);
+        menuConfig.backgroundColor = '#FFFFFF';
         menuConfig.color = '#000';
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press <- for Novice or -> for Expert', menuConfig).setOrigin(0.5);
     
@@ -46,7 +46,7 @@ class Menu extends Phaser.Scene {
             //easy mode
             game.settings = {
                 spaceshipSpeed: 3,
-                gameTimer: 10000
+                gameTimer: 60000
             }
             this.sound.play('sfx_select');
             this.scene.start('playScene');
