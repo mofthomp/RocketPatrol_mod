@@ -4,11 +4,11 @@ Molly Thompson, CMPM-02
 Date
 Time Taken: 3 + 
 
-+ 2 -- dvorak compatibility -- done!
-+ 5 -- randomize "ships" -- 
++ 5 -- dvorak compatibility -- done!
++ 5 -- randomize "ships" -- done!
 + 5 -- bg music
-+10 -- display time -- done!
-+20 -- add time for hits -- done!
++10 -- display time -- done! THANK YOU JARED FOR THE HELP!
++20 -- add time for hits -- done! THANK YOU JARED FOR THE HELP!
 +60 -- full reskin (new assets; new sfx; new UI; new menu screen)
 =102
 
