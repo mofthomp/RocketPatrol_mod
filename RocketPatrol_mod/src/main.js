@@ -10,7 +10,7 @@ Time Taken: 3 +
 +10 -- display time -- done! THANK YOU JARED FOR THE HELP!
 +20 -- add time for hits -- done! THANK YOU JARED FOR THE HELP!
 +60 -- full reskin (new assets; new sfx; new UI; new menu screen)
-=102
+=105
 
 
 
