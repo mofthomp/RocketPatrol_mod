@@ -2,7 +2,7 @@
 Molly Thompson, CMPM-02
 "Title Goes Here"
 Date
-Time Taken: 3 + 
+Time Taken: 3 + 4 + 2
 
 + 5 -- dvorak compatibility -- done!
 + 5 -- randomize "ships" -- done!
@@ -12,7 +12,7 @@ Time Taken: 3 +
 +60 -- full reskin (new assets; new sfx; new UI; new menu screen)
 =105
 
-
+//push??
 
 */
 
