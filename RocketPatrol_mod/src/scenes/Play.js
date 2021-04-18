@@ -10,7 +10,6 @@ class Play extends Phaser.Scene{
         this.load.image('player', './assets/player.png');
         this.load.image('enemy', './assets/enemy.png');
         this.load.image('background', './assets/background.png');
-        //this.load.image('foreground', './assets/foreground.png');
         //load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {
             frameWidth: 64,
@@ -21,6 +20,11 @@ class Play extends Phaser.Scene{
     }
 
     create() { //back to front
+        //music
+        this.bgSound = this.sound.add('ambience', {
+            loop: true
+        });
+        this.bgSound.play();
         //place background
         this.background = this.add.tileSprite(0, 0, 640, 480, 'background').setOrigin(0,0);
 
@@ -209,7 +213,6 @@ class Play extends Phaser.Scene{
 
     flip() {
         let direction = Math.round(Math.random());
-        console.log(direction);
         return(direction);
 
     }
