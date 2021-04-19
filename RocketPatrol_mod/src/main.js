@@ -1,18 +1,19 @@
 /*
 Molly Thompson, CMPM-02
-"Title Goes Here"
-Date
-Time Taken: 3 + 4 + 2
+"Sunny Day :)"
+Date: 4/19/2021
+Time Taken: probably about 15 hours
 
 + 5 -- dvorak compatibility -- done!
 + 5 -- randomize "ships" -- done!
-+ 5 -- bg music
++ 5 -- bg music -- done!
 +10 -- display time -- done! THANK YOU JARED FOR THE HELP!
 +20 -- add time for hits -- done! THANK YOU JARED FOR THE HELP!
 +60 -- full reskin (new assets; new sfx; new UI; new menu screen)
 =105
 
-//sound effects from mixkit.com: free for reuse
+sound effects from mixkit.com: free for reuse
+original code by Nathan Altice
 
 */
 
